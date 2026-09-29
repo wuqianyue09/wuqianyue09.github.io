@@ -1,5 +1,1 @@
-{
-  "files.associations": { "*.css": "tailwindcss" },
-  "eslint.validate": ["css"],
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
-}
+{}

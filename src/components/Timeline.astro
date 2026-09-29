@@ -1,0 +1,83 @@
+---
+import type { TimelineEntry } from "../data/profile";
+
+interface Props {
+  id: string;
+  title: string;
+  entries: TimelineEntry[];
+  emptyMessage: string;
+}
+
+const { id, title, entries, emptyMessage } = Astro.props;
+const groups = new Map<string, TimelineEntry[]>();
+for (const entry of [...entries].sort((a, b) => (b.date ?? "9999").localeCompare(a.date ?? "9999"))) {
+  const year = entry.date?.slice(0, 4) ?? "Ongoing";
+  const group = groups.get(year) ?? [];
+  group.push(entry);
+  groups.set(year, group);
+}
+
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const dateLabel = (date: string) => {
+  const [, month, day] = date.split("-");
+  if (day) return `${day}/${month}`;
+  return month ? months[Number(month) - 1] : "";
+};
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const entryUrl = (href: string) => href.startsWith("/") && !href.startsWith("//") ? `${base}${href}` : href;
+---
+
+<section aria-labelledby={`${id}-heading`} class="timeline">
+  <h2 id={`${id}-heading`}>{title}</h2>
+  {groups.size ? (
+    <div class="year-groups">
+      {Array.from(groups, ([year, items]) => (
+        <div class="year-group">
+          <h3 id={`${id}-${year}`} class="year">{year}</h3>
+          <ul aria-labelledby={`${id}-${year}`}>
+            {items.map((entry) => {
+              const Tag = entry.href ? "a" : "div";
+              return (
+                <li>
+                  <Tag class:list={["entry", { "entry-link": entry.href }]} href={entry.href ? entryUrl(entry.href) : undefined}>
+                    <span class="entry-title">
+                      {entry.title}
+                      {entry.subtitle && <span class="entry-subtitle">{entry.subtitle}</span>}
+                    </span>
+                    {entry.date && dateLabel(entry.date) && <time datetime={entry.date}>{dateLabel(entry.date)}</time>}
+                  </Tag>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p class="empty-state">{emptyMessage}</p>
+  )}
+</section>
+
+<style>
+  .year-group { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 20px; background: linear-gradient(var(--rule), var(--rule)) top / 100% 1px no-repeat; }
+  .year { margin: 0; padding-top: 8px; color: var(--muted); font-size: 12px; font-weight: 400; line-height: 22.4px; font-variant-numeric: tabular-nums; }
+  ul { list-style: none; padding: 0; margin: 0; }
+  li + li { background: linear-gradient(var(--rule), var(--rule)) top / 100% 1px no-repeat; }
+  .entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 20px; padding: 8px 0; text-decoration: none; }
+  .entry-title { overflow-wrap: anywhere; transition: opacity 140ms ease; }
+  .entry-subtitle { display: block; margin-top: 2px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  time { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; transition: opacity 140ms ease; }
+  .entry-link:hover { color: inherit; }
+  @media (hover: hover) and (pointer: fine) and (min-width: 520px) {
+    .year-groups:has(li:hover) li:not(:hover) .entry-title,
+    .year-groups:has(li:hover) li:not(:hover) time { opacity: .3; }
+  }
+  .empty-state { padding-top: 14px; border-top: 1px solid var(--rule); color: var(--muted); }
+  @media (max-width: 600px) {
+    .year-group { grid-template-columns: 50px minmax(0, 1fr); gap: 12px; }
+    .entry { gap: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .entry-title, time { transition: none; }
+  }
+</style>

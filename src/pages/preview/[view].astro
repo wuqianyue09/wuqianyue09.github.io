@@ -1,0 +1,36 @@
+---
+import Timeline from "../../components/Timeline.astro";
+import "../../styles/global.css";
+
+// The visual test page exists only in development; production emits no route.
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { view: "timeline" } }] : [];
+}
+
+const entries = [
+  { title: "示例：关于统计学习的一些笔记", date: "2025-08-06", href: "#publications-heading" },
+  { title: "Example: a short research note", date: "2026-09-29", href: "#publications-heading" },
+  { title: "Example: a longer title about attention mechanisms and kernel approximations", date: "2026-09-18", href: "#publications-heading" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Timeline layout preview</title>
+  </head>
+  <body>
+    <main>
+      <p>Layout preview · sample titles and dates</p>
+      <Timeline id="publications" title="Publications" entries={entries} emptyMessage="No publications yet." />
+      <Timeline id="research" title="Research Experience" entries={[
+        { title: "Example: an ongoing research project" },
+        { title: "Example: a project with only its start month known", date: "2026-06" },
+        { title: "示例：较早的研究经历", date: "2025-03-12" },
+      ]} emptyMessage="" />
+    </main>
+  </body>
+</html>
