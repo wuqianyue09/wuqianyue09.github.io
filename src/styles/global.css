@@ -21,7 +21,7 @@ main {
 
 h1, h2, p { margin: 0; }
 h1, h2 { font-size: inherit; font-weight: 500; }
-.updated { margin-top: 3px; color: var(--muted); }
+.tagline { margin-top: 3px; color: var(--muted); }
 .intro { margin-top: 28px; }
 .intro p + p { margin-top: 18px; }
 
