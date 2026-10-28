@@ -1,57 +1,28 @@
-# Qianyue Wu
+# Qianyue Wu · Personal Homepage
 
-A small, static personal homepage built with Astro. The typography and narrow
-column are inspired by [Benji Taylor](https://benji.org/) and
-[Ben Sage](https://sage.me/).
+The personal homepage of **Qianyue Wu (wuqianyue)**, sharing my research interests, research experience, education, and publications in statistics and machine learning.
 
-## Development
+**Visit the website: [wuqianyue09.github.io](https://wuqianyue09.github.io/)**
 
-Use Node.js 22 or newer.
+## About
+
+I am a master’s student in Applied Statistics at Beijing Normal University at Zhuhai. My research interests center on the theoretical foundations of machine learning, particularly Transformer architectures, attention mechanisms, and kernel methods and approximation.
+
+## Local development
+
+Built with [Astro](https://astro.build/) and deployed on GitHub Pages. Requires Node.js 22 or newer.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Astro prints the local preview URL (normally `http://localhost:4321`).
+Run `npm run build` to check and build the site, or `npm run preview` to preview the production build.
 
-```sh
-npm run build   # Type-check, then generate dist/
-npm run preview # Preview the production build
-```
+- Introduction: `src/pages/index.astro`
+- Research and education: `src/data/profile.ts`
+- Typography and layout: `src/styles/global.css`
 
-Edit the introduction in `src/pages/index.astro`, and the
-typography, spacing, and responsive layout in `src/styles/global.css`.
-The page uses system fonts. A small client-side script updates the Beijing clock
-each minute and switches the illustrated cat between sleeping (00:00–07:59)
-and awake (08:00–23:59), always using the `Asia/Shanghai` time zone.
-The footer lives in `src/components/LocalTime.astro`; its time logic is in
-`src/lib/beijing-time.ts`. Cat animations respect reduced-motion preferences.
+## Design inspiration
 
-## Homepage content
-
-The homepage order is introduction, Research Interests, Research Experience,
-Education Background, and Publications. Research and education rows remain
-plain text until there are real detail pages to link to.
-
-Edit `researchInterests`, `education`, `publications`, and `researchExperience`
-in `src/data/profile.ts`. Timeline entries have a `title`, an optional
-`subtitle`, an optional `date`, and an optional `href`.
-Research dates represent when each project started, using the month precision
-provided in the CV. Education uses enrollment dates from the CV; degree names
-appear below institutions. Publications use their publication dates.
-Dates can be `YYYY-MM-DD`, `YYYY-MM`, or just `YYYY`: supply only known
-precision. Entries group by year, newest first, with the year on the left
-and day/month on the right. Month-only entries show the month name; year-only
-entries have no extra date. Undated research topics are grouped as Ongoing.
-Publications remain empty until real publications are supplied.
-
-`src/components/Timeline.astro` provides the dated sections. Entries without a URL
-are plain text. Links may be external or site-relative; only link to existing pages.
-
-During `npm run dev`, open `/preview/timeline` to inspect labelled examples
-with multiple years, long titles, Chinese text, and partial dates. The preview
-route and sample entries are excluded from production output.
-
-The existing GitHub Pages workflow supplies the site URL and base path at build
-time. Homepage links and the favicon work under a repository subpath too.
+The minimal layout and typography are inspired by [Benji Taylor](https://benji.org/) and [Ben Sage](https://sage.me/).
