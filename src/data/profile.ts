@@ -30,6 +30,7 @@ export const researchExperience: TimelineEntry[] = [
   {
     title: "Not All Dimensions Are Equal: Outlier-Aware Attention Linearization with Grouped Quadratic Kernels",
     date: "2026-02",
+    href: "https://arxiv.org/abs/2610.13674",
   },
   {
     title: "Smoking Behavior Prediction and Smoking-Cessation Recommendation Modeling",
